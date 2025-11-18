@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Online Graph Plotter</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+
+<div class="container">
+    <h1>Graph Studio</h1>
+
+    <form method="get" action="/plot">
+        <label>Mode:</label>
+        <select name="mode" id="mode" onchange="toggleFields()">
+            <option value="function">Function</option>
+            <option value="parametric">Parametric</option>
+            <option value="polar">Polar</option>
+        </select>
+
+        <div id="function-fields">
+            <label>f(x) =</label>
+            <input type="text" name="expr_x" placeholder="e.g., sin(x)">
+        </div>
+
+        <div id="parametric-fields" style="display:none;">
+            <label>x(t) =</label>
+            <input type="text" name="expr_x" placeholder="e.g., cos(t)">
+            <label>y(t) =</label>
+            <input type="text" name="expr_y" placeholder="e.g., sin(t)">
+        </div>
+
+        <div id="polar-fields" style="display:none;">
+            <label>r(θ) =</label>
+            <input type="text" name="expr_r" placeholder="e.g., 1 + cos(t)">
+        </div>
+
+        <label>xmin:</label>
+        <input type="text" name="xmin" placeholder="-10">
+
+        <label>xmax:</label>
+        <input type="text" name="xmax" placeholder="10">
+
+        <label>Points:</label>
+        <input type="number" name="points" value="1000">
+
+        <button type="submit">Plot</button>
+    </form>
+
+    {% if plot_b64 %}
+    <h2>Generated Plot</h2>
+    <img src="data:image/png;base64,{{ plot_b64 }}" width="500">
+
+    <br><br>
+    <a href="/download" class="btn">Download Plot</a>
+    {% endif %}
+
+</div>
+
+<script>
+function toggleFields() {
+    let mode = document.getElementById("mode").value;
+    document.getElementById("function-fields").style.display = mode === "function" ? "block" : "none";
+    document.getElementById("parametric-fields").style.display = mode === "parametric" ? "block" : "none";
+    document.getElementById("polar-fields").style.display = mode === "polar" ? "block" : "none";
+}
+</script>
+
+</body>
+</html>
